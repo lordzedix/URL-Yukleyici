@@ -1,34 +1,26 @@
-## X-URL-Uploader (Bot)
+## URL-Yükleyici
 ---
 
-Telegram RoBot to Upload Links.
+Bağlantıları Yüklemek için Telegram Botu.
 
-**Features**:
+**Özellikleri**:
 
-👉 Upload [YTDL Supported Links](https://ytdl-org.github.io/youtube-dl/supportedsites.html) to Telegram.
+👉 [YTDL Desteklenen Bağlantıları](https://ytdl-org.github.io/youtube-dl/supportedsites.html) Telegram'a yükleyin.
 
-👉 Upload HTTP/HTTPS as File/Video to Telegram.
+👉 HTTP/HTTPS'yi Dosya/Video olarak Telegram'a yükleyin.
 
-👉 Upload ZippyShare, HxFile, MediaFire and AnonFiles URLs
+👉 ZippyShare, HxFile, MediaFire ve AnonFiles URL'lerini yükleyin
 
-👉 Broadcast message, ban, unban, check total users
-
-**Heroku Buildpacks**
-```
-https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest
-```
-```
-heroku/python
-```
+👉 Mesaj yayınla, yasakla, yasağı kaldır, toplam kullanıcıları kontrol et
 
 
-## Credits, and Thanks to
+## Kredi ve Teşekkürler
 
-* [@X-Gorn](https://t.me/xgorn) for his [X-URL-Uploader](https://github.com/X-Gorn/X-URL-Uploader/tree/database)
-* [@TGExplore](https://t.me/ViruZs) for his [TG-URL-Uploader](https://github.com/TGExplore/TG-URL-Uploader)
-* [@SpEcHlDe](https://t.me/ThankTelegram) for his [AnyDLBot](https://telegram.dog/AnyDLBot)
-* [Dan Tès](https://t.me/haskell) for his [Pyrogram Library](https://github.com/pyrogram/pyrogram)
-* [Yoily](https://t.me/YoilyL) for his [UploaditBot](https://telegram.dog/UploaditBot)
-* [@AbirHasan2005](https://t.me/AbirHasan2005) for his [database.py](https://github.com/AbirHasan2005/VideoCompress/blob/main/bot/database/database.py)
+* [X-URL-Uploader](https://github.com/X-Gorn/X-URL-Uploader/tree/database) için [@X-Gorn](https://t.me/xgorn)
+* [TG-URL-Uploader](https://github.com/TGExplore/TG-URL-Uploader) için [@TGExplore](https://t.me/ViruZs)
+* [AnyDLBot](https://telegram.dog/AnyDLBot) için [@SpEcHlDe](https://t.me/ThankTelegram)
+* [Pyrogram Library](https://github.com/pyrogram/pyrogram) için [Dan Tès](https://t.me/haskell)
+* [UploaditBot](https://telegram.dog/UploaditBot) için [Yoily](https://t.me/YoilyL)
+* [database.py](https://github.com/AbirHasan2005/VideoCompress/blob/main/bot/database/database.py) için [@AbirHasan2005](https://t.me/AbirHasan2005)
 #### LICENSEs
 - GPLv3
