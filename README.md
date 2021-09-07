@@ -24,6 +24,7 @@ heroku/python
 
 ## Credits, and Thanks to
 
+* [@X-Gorn](https://t.me/xgorn) for his [X-URL-Uploader](https://github.com/X-Gorn/X-URL-Uploader/tree/database)
 * [@TGExplore](https://t.me/ViruZs) for his [TG-URL-Uploader](https://github.com/TGExplore/TG-URL-Uploader)
 * [@SpEcHlDe](https://t.me/ThankTelegram) for his [AnyDLBot](https://telegram.dog/AnyDLBot)
 * [Dan Tès](https://t.me/haskell) for his [Pyrogram Library](https://github.com/pyrogram/pyrogram)
