@@ -16,7 +16,7 @@ Bağlantıları Yüklemek için Telegram Botu.
 
 #### Heroku'da çalıştırın
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy?template=https://github.com/Turkce-Botlar-Sohbet/URL-Yukleyici)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 
 #### VPS'nizde çalıştırın
