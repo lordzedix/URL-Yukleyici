@@ -57,7 +57,7 @@
       "required": false
     },
     "LOG_CHANNEL": {
-      "description": "Günlükler için Kanal Kimliğiniz",
+      "description": "Günlükler için Kanal ID - Telegram ID numaranız olabilir.",
       "value": "",
       "required": false
     },
