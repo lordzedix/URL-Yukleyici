@@ -27,7 +27,15 @@ cd URL-Yukleyici
 pip3 install -r requirements.txt
 # <config.py'yi uygun şekilde yapılandırın>
 python3 bot.py
+
 ```
+## Komutlar
+Komut                   | Açıklama
+----------------------- | ----------------------------------------    
+`/broadcast`            | Kullanıcılara toplu olarak mesaj gönderme.
+`/help`                 | Yardım komutu.     
+`/genthumb`             | Thumbnail eklemek için bir fotoğrafa yanıtlayın.
+`/delthumb`             | Thumbnail silmek için.
 
 ## Kredi ve Teşekkürler
 
