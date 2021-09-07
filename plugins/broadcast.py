@@ -1,4 +1,3 @@
-
 # (c) @AbirHasan2005 | X-Noid
 
 import traceback, datetime, asyncio, string, random, time, os, aiofiles, aiofiles.os
@@ -25,11 +24,11 @@ async def send_msg(user_id, message):
         await asyncio.sleep(e.x)
         return send_msg(user_id, message)
     except InputUserDeactivated:
-        return 400, f"{user_id} : deactivated\n"
+        return 400, f"{user_id} : devre dışı\n"
     except UserIsBlocked:
-        return 400, f"{user_id} : blocked the bot\n"
+        return 400, f"{user_id} : botu engelledi\n"
     except PeerIdInvalid:
-        return 400, f"{user_id} : user id invalid\n"
+        return 400, f"{user_id} : kullanıcı kimliği geçersiz\n"
     except Exception as e:
         return 500, f"{user_id} : {traceback.format_exc()}\n"
         
@@ -48,7 +47,7 @@ async def broadcast_(c, m):
             break
     
     out = await m.reply_text(
-        text = f"Broadcast initiated! You will be notified with log file when all the users are notified."
+        text = f"Yayın başladı! Tüm kullanıcılar bilgilendirildiğinde günlük dosyası ile bilgilendirileceksiniz."
     )
     start_time = time.time()
     total_users = await db.total_users_count()
@@ -102,13 +101,13 @@ async def broadcast_(c, m):
     
     if failed == 0:
         await m.reply_text(
-            text=f"broadcast completed in `{completed_in}`\n\nTotal users {total_users}.\nTotal done {done}, {success} success and {failed} failed.",
+            text=f"Yayın tamamlandı `{completed_in}`\n\nToplam kullanıcı {total_users}.\nToplam yapılan {done}, {success} başarılı {failed} başarısız.",
             quote=True
         )
     else:
         await m.reply_document(
             document='broadcast.txt',
-            caption=f"broadcast completed in `{completed_in}`\n\nTotal users {total_users}.\nTotal done {done}, {success} success and {failed} failed.",
+            caption=f"Yayın tamamlandı `{completed_in}`\n\nToplam kullanıcı {total_users}.\nToplam yapılan {done}, {success} başarılı {failed} başarısız.",
             quote=True
         )
     
