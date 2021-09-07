@@ -29,7 +29,7 @@ git clone https://github.com/Turkce-Botlar-Sohbet/URL-Yukleyici
 cd URL-Yukleyici
 pip3 install -r requirements.txt
 # <config.py'yi uygun şekilde yapılandırın>
-python3 bot.py
+python3 bot.py```
 
 ## Kredi ve Teşekkürler
 
