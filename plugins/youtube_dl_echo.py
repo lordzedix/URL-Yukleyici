@@ -18,7 +18,7 @@ else:
 # the Strings used for this "thing"
 from translation import Translation
 
-import pyrogram
+from pyrogram import Client, filters
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 from database import Database
@@ -32,53 +32,57 @@ from pyrogram.errors import UserNotParticipant
 
 db = Database(Config.DATABASE_URL, Config.SESSION_NAME)
 
-@pyrogram.Client.on_message(pyrogram.filters.regex(pattern=".*http.*"))
+@Client.on_message(filters.private & filters.regex(pattern=".*http.*"))
 async def echo(bot, update):
     if update.from_user.id in Config.BANNED_USERS:
-        await update.reply_text("You are BANNED")
+        await bot.delete_messages(
+            chat_id=update.chat.id,
+            message_ids=update.message_id,
+            revoke=True
+        )
         return
     update_channel = Config.UPDATE_CHANNEL
     if update_channel:
         try:
             user = await bot.get_chat_member(update_channel, update.chat.id)
             if user.status == "kicked":
-               await update.reply_text("Sorry, You are **BANNED**")
+               await bot.delete_messages(
+                 chat_id=update.chat.id,
+                 message_ids=update.message_id,
+                 revoke=True
+               )
                return
         except UserNotParticipant:
             #await update.reply_text(f"Join @{update_channel} To Use Me")
             await update.reply_text(
-                text="**Join My Updates Channel to use Me**",
+                text="**Beni kullanmak için kanala katılın.**",
                 reply_markup=InlineKeyboardMarkup([
-                    [ InlineKeyboardButton(text="Join My Updates Channel", url=f"https://t.me/{update_channel}")]
+                    [ InlineKeyboardButton(text="KATIL", url=f"https://t.me/{update_channel}")]
               ])
             )
             return
         except Exception:
-            await update.reply_text("Something Wrong. Contact @xgorn")
+            await update.reply_text("Ters giden bir şey mi var. @thebans ile iletişime geçin")
             return
     if not await db.is_user_exist(update.chat.id):
         await db.add_user(update.chat.id)
-    ban_status = await db.get_ban_status(update.chat.id)
-    if ban_status['is_banned']:
-      await update.reply_text(f"You are Banned\n\nReason: {ban_status['ban_reason']}")
-      return
     logger.info(update.from_user)
     youtube_dl_username = None
     youtube_dl_password = None
     file_name = None
     url = update.text
     folder = f'./lk21/{update.from_user.id}/'
-    bypass = ['zippyshare', 'hxfile', 'mediafire', 'anonfiles', 'streamtape', 'antfiles']
+    bypass = ['zippyshare', 'hxfile', 'anonfiles', 'streamtape', 'antfiles']
     ext = tldextract.extract(url)
     if ext.domain in bypass:
-        pablo = await update.reply_text('LK21 link detected')
+        pablo = await update.reply_text('LK21 bağlantısı algılandı')
         time.sleep(2.5)
         if os.path.isdir(folder):
-            await update.reply_text("Don't spam, wait till your previous task done.")
+            await update.reply_text("Spam göndermeyin, önceki göreviniz bitene kadar bekleyin.")
             await pablo.delete()
             return
         os.makedirs(folder)
-        await pablo.edit_text('Downloading...')
+        await pablo.edit_text('İndiriliyor...')
         bypasser = lk21.Bypass()
         xurl = bypasser.bypass_url(url)
         if ' | ' in url:
@@ -102,7 +106,7 @@ async def echo(bot, update):
             if metadata is not None:
                 if metadata.has("duration"):
                     duration = metadata.get('duration').seconds
-        await pablo.edit_text('Uploading...')
+        await pablo.edit_text('Yükleniyor...')
         start_time = time.time()
         if xfiletype in ['video/mp4', 'video/x-matroska', 'video/webm']:
             video = await bot.send_video(
@@ -119,7 +123,7 @@ async def echo(bot, update):
                 )
             )
             video_f = await video.forward(Config.LOG_CHANNEL)
-            await video_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + '\nLK21 URL: ' + url)
+            await video_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + '\nLK21 URL: ' + url)
         elif xfiletype == 'audio/mpeg':
             audio = await bot.send_audio(
                 chat_id=update.chat.id,
@@ -135,7 +139,7 @@ async def echo(bot, update):
                 )
             )
             audio_f = await audio.forward(Config.LOG_CHANNEL)
-            await audio_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + '\nLK21 URL: ' + url)
+            await audio_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + '\nLK21 URL: ' + url)
         else:
             doc = await bot.send_document(
                 chat_id=update.chat.id,
@@ -150,7 +154,7 @@ async def echo(bot, update):
                 )
             )
             doc_f = await doc.forward(Config.LOG_CHANNEL)
-            await doc_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + '\nLK21 URL: ' + url)
+            await doc_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + '\nLK21 URL: ' + url)
         await pablo.delete()
         shutil.rmtree(folder)
         return
@@ -331,11 +335,11 @@ async def echo(bot, update):
                 "video", format_id, format_ext)
             inline_keyboard.append([
                 InlineKeyboardButton(
-                    "SVideo",
+                    "SVideo 🎞",
                     callback_data=(cb_string_video).encode("UTF-8")
                 ),
                 InlineKeyboardButton(
-                    "DFile",
+                    "DFile 📁",
                     callback_data=(cb_string_file).encode("UTF-8")
                 )
             ])
@@ -392,11 +396,11 @@ async def echo(bot, update):
             "video", "OFL", "ENON")
         inline_keyboard.append([
             InlineKeyboardButton(
-                "SVideo",
+                "SVideo 🎞",
                 callback_data=(cb_string_video).encode("UTF-8")
             ),
             InlineKeyboardButton(
-                "DFile",
+                "DFile 📁",
                 callback_data=(cb_string_file).encode("UTF-8")
             )
         ])
@@ -410,7 +414,7 @@ async def echo(bot, update):
         )
 
 
-@pyrogram.Client.on_message(pyrogram.filters.command('lkdeldir'))
+@Client.on_message(filters.private & filters.command('lkdeldir'))
 async def lkdeldir(bot, update):
     shutil.rmtree(f'./lk21/{update.from_user.id}')
-    await update.reply_text(f'Deleted **{update.from_user.first_name}** lk21 directory')
+    await update.reply_text(f'**{update.from_user.first_name}** lk21 dizini silindi')
