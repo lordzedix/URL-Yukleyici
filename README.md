@@ -36,6 +36,10 @@ Komut                   | Açıklama
 `/help`                 | Yardım komutu.     
 `/genthumb`             | Thumbnail eklemek için bir fotoğrafa yanıtlayın.
 `/delthumb`             | Thumbnail silmek için.
+`/total`                | Veritabanında kayıtlı toplam kullanıcı sayısını verir.
+`/ban`                  | Kullanıcıyı bottan yasaklamak için.
+`/unban`                | Kullanıcının yasağını kaldırmak için.
+`/banned_users`         | Yasaklı kullanıcı sayısını verir.
 
 ## Kredi ve Teşekkürler
 
