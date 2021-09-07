@@ -71,7 +71,7 @@
       "value": "128"
     },
     "HTTP_PROXY": {
-      "description": "proxy for accessing youtube-dl in GeoRestricted Areas. Get your own proxy from https://github.com/rg3/youtube-dl/issues/1091#issuecomment-230163061",
+      "description": "Kısıtlı Alanlarda youtube-dl'ye erişmek için proxy. https://github.com/rg3/youtube-dl/issues/1091#issuecomment-230163061 adresinden kendi proxy'nizi alın",
       "value": "",
       "required": false
     }
