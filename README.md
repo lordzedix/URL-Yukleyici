@@ -22,6 +22,6 @@ Bağlantıları Yüklemek için Telegram Botu.
 * [Pyrogram Library](https://github.com/pyrogram/pyrogram) için [Dan Tès](https://t.me/haskell)
 * [UploaditBot](https://telegram.dog/UploaditBot) için [Yoily](https://t.me/YoilyL)
 * [database.py](https://github.com/AbirHasan2005/VideoCompress/blob/main/bot/database/database.py) için [@AbirHasan2005](https://t.me/AbirHasan2005)
-* 
+
 #### LİSANS
 - GPLv3
