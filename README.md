@@ -9,7 +9,7 @@ Bağlantıları Yüklemek için Telegram Botu.
 
 👉 HTTP/HTTPS'yi Dosya/Video olarak Telegram'a yükleyin.
 
-👉 ZippyShare, HxFile, MediaFire ve AnonFiles URL'lerini yükleyin
+👉 ZippyShare, HxFile ve AnonFiles URL'lerini yükleyin
 
 👉 Mesaj yayınla, yasakla, yasağı kaldır, toplam kullanıcıları kontrol et
 
