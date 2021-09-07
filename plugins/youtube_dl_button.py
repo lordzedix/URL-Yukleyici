@@ -209,8 +209,8 @@ async def youtube_dl_call_back(bot, update):
             )
             # get the correct width, height, and duration for videos greater than 10MB
             # ref: message from @BotSupport
-            width = 0
-            height = 0
+            width = 1280
+            height = 720
             duration = 0
             if tg_send_type != "file":
                 metadata = extractMetadata(createParser(download_directory))
@@ -267,7 +267,7 @@ async def youtube_dl_call_back(bot, update):
                     )
                 )
                 audio_f = await audio.forward(Config.LOG_CHANNEL)
-                await audio_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await audio_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
             elif tg_send_type == "file":
                 document = await bot.send_document(
                     chat_id=update.message.chat.id,
@@ -285,7 +285,7 @@ async def youtube_dl_call_back(bot, update):
                     )
                 )
                 document_f = await document.forward(Config.LOG_CHANNEL)
-                await document_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await document_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
             elif tg_send_type == "vm":
                 video_note = await bot.send_video_note(
                     chat_id=update.message.chat.id,
@@ -302,7 +302,7 @@ async def youtube_dl_call_back(bot, update):
                     )
                 )
                 video_note_f = await video_note.forward(Config.LOG_CHANNEL)
-                await video_note_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await video_note_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
             elif tg_send_type == "video":
                 video = await bot.send_video(
                     chat_id=update.message.chat.id,
@@ -324,7 +324,7 @@ async def youtube_dl_call_back(bot, update):
                     )
                 )
                 video_f = await video.forward(Config.LOG_CHANNEL)
-                await video_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await video_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
             else:
                 logger.info("Did this happen? :\\")
             end_two = datetime.now()
@@ -333,9 +333,9 @@ async def youtube_dl_call_back(bot, update):
             media_album_p = []
             if images is not None:
                 i = 0
-                caption = "© @xTeamBots"
+                caption = "© @dizifilmarama"
                 if is_w_f:
-                    caption = "@xurluploaderbot"
+                    caption = "@tiranozorbot"
                 for image in images:
                     if os.path.exists(str(image)):
                         if i == 0:
