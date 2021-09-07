@@ -185,7 +185,7 @@ async def ddl_call_back(bot, update):
                     )
                 )
                 audio_f = await audio.forward(Config.LOG_CHANNEL)
-                await audio_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await audio_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
             elif tg_send_type == "file":
                 document = await bot.send_document(
                     chat_id=update.message.chat.id,
@@ -202,7 +202,7 @@ async def ddl_call_back(bot, update):
                     )
                 )
                 document_f = await document.forward(Config.LOG_CHANNEL)
-                await document_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await document_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
             elif tg_send_type == "vm":
                 video_note = await bot.send_video_note(
                     chat_id=update.message.chat.id,
@@ -219,7 +219,7 @@ async def ddl_call_back(bot, update):
                     )
                 )
                 video_note_f = await video_note.forward(Config.LOG_CHANNEL)
-                await video_note_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await video_note_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
             elif tg_send_type == "video":
                 video = await bot.send_video(
                     chat_id=update.message.chat.id,
@@ -240,9 +240,9 @@ async def ddl_call_back(bot, update):
                     )
                 )
                 video_f = await video.forward(Config.LOG_CHANNEL)
-                await video_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await video_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
             else:
-                logger.info("Did this happen? :\\")
+                logger.info("Bu oldu mu? :\\")
             end_two = datetime.now()
             try:
                 os.remove(download_directory)
@@ -277,9 +277,9 @@ async def download_coroutine(bot, session, url, file_name, chat_id, message_id, 
         await bot.edit_message_text(
             chat_id,
             message_id,
-            text="""Initiating Download
+            text="""İndirme Başlatılıyor
 URL: {}
-File Size: {}""".format(url, humanbytes(total_length))
+Boyut: {}""".format(url, humanbytes(total_length))
         )
         with open(file_name, "wb") as f_handle:
             while True:
@@ -298,11 +298,11 @@ File Size: {}""".format(url, humanbytes(total_length))
                         (total_length - downloaded) / speed) * 1000
                     estimated_total_time = elapsed_time + time_to_completion
                     try:
-                        current_message = """**Download Status**
+                        current_message = """**İndirme Durumu**
 URL: {}
-File Size: {}
-Downloaded: {}
-ETA: {}""".format(
+Boyut: {}
+İndirilen: {}
+Süre: {}""".format(
     url,
     humanbytes(total_length),
     humanbytes(downloaded),
