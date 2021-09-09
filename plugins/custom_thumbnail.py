@@ -26,7 +26,7 @@ from pyrogram import Client, filters
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 
-@Client.on_message(filters.private & filters.command(["genthumb"]))
+@Client.on_message(filters.command(["genthumb"]))
 async def generate_custom_thumbnail(bot, update):
     if update.from_user.id in Config.BANNED_USERS:
         await bot.delete_messages(
@@ -116,7 +116,7 @@ async def save_photo(bot, update):
         )
 
 
-@Client.on_message(filters.private & filters.command(["delthumb"]))
+@Client.on_message(filters.command(["delthumb"]))
 async def delthumbnail(bot, update):
     if update.from_user.id in Config.BANNED_USERS:
         await bot.delete_messages(
