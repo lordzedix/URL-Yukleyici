@@ -129,8 +129,8 @@ async def ddl_call_back(bot, update):
         else:
             # get the correct width, height, and duration for videos greater than 10MB
             # ref: message from @BotSupport
-            width = 0
-            height = 0
+            width = 1280
+            height = 720
             duration = 0
             if tg_send_type != "file":
                 metadata = extractMetadata(createParser(download_directory))
