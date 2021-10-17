@@ -7,6 +7,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
 import lk21, requests, urllib.parse, filetype, os, time, shutil, tldextract, asyncio, json, math
 from PIL import Image
 # the secret configuration specific things
@@ -32,7 +33,7 @@ from pyrogram.errors import UserNotParticipant
 
 db = Database(Config.DATABASE_URL, Config.SESSION_NAME)
 
-@Client.on_message(filters.regex(pattern=".*http.*"))
+@Client.on_message(filters.private & filters.regex(pattern=".*http.*"))
 async def echo(bot, update):
     if update.from_user.id in Config.BANNED_USERS:
         await bot.delete_messages(
@@ -93,6 +94,8 @@ async def echo(bot, update):
             if xurl.find('/'):
                 urlname = xurl.rsplit('/', 1)[1]
             file_name = urllib.parse.unquote(urlname)
+            if '+' in file_name:
+                file_name = file_name.replace('+', ' ')
         dldir = f'{folder}{file_name}'
         r = requests.get(xurl, allow_redirects=True)
         open(dldir, 'wb').write(r.content)
@@ -197,28 +200,42 @@ async def echo(bot, update):
                 url = url[o:o + l]
     if Config.HTTP_PROXY != "":
         command_to_exec = [
-            "youtube-dl",
+            "yt-dlp",
             "--no-warnings",
             "--youtube-skip-dash-manifest",
+            "--no-check-certificate",
             "-j",
             url,
             "--proxy", Config.HTTP_PROXY
         ]
     else:
         command_to_exec = [
-            "youtube-dl",
+            "yt-dlp",
             "--no-warnings",
             "--youtube-skip-dash-manifest",
+            "--no-check-certificate",
             "-j",
             url
-        ]
+        ]  
+    if "moly.cloud" in url:
+        command_to_exec.append("--referer")
+        command_to_exec.append("https://vidmoly.to/")
+    if "closeload" in url:
+        command_to_exec.append("--referer")
+        command_to_exec.append("https://closeload.com/")
+    if "mail.ru" in url:
+        command_to_exec.append("--referer")
+        command_to_exec.append("https://my.mail.ru/")
+    if "cdnhan" in url:
+        command_to_exec.append("--referer")
+        command_to_exec.append("https://dizipal81.com/")
     if youtube_dl_username is not None:
         command_to_exec.append("--username")
         command_to_exec.append(youtube_dl_username)
     if youtube_dl_password is not None:
         command_to_exec.append("--password")
         command_to_exec.append(youtube_dl_password)
-    # logger.info(command_to_exec)
+    logger.info(command_to_exec)
     process = await asyncio.create_subprocess_exec(
         *command_to_exec,
         # stdout must a pipe to be accessible as process.stdout
@@ -318,13 +335,13 @@ async def echo(bot, update):
                 cb_string = "{}|{}|{}".format("audio", "320k", "mp3")
                 inline_keyboard.append([
                     InlineKeyboardButton(
-                        "MP3 " + "(" + "64 kbps" + ")", callback_data=cb_string_64.encode("UTF-8")),
+                        "🎶MP3🎶" + "(" + "64 kbps" + ")", callback_data=cb_string_64.encode("UTF-8")),
                     InlineKeyboardButton(
-                        "MP3 " + "(" + "128 kbps" + ")", callback_data=cb_string_128.encode("UTF-8"))
+                        "🎶MP3🎶" + "(" + "128 kbps" + ")", callback_data=cb_string_128.encode("UTF-8"))
                 ])
                 inline_keyboard.append([
                     InlineKeyboardButton(
-                        "MP3 " + "(" + "320 kbps" + ")", callback_data=cb_string.encode("UTF-8"))
+                        "🎶MP3🎶" + "(" + "320 kbps" + ")", callback_data=cb_string.encode("UTF-8"))
                 ])
         else:
             format_id = response_json["format_id"]
@@ -335,11 +352,11 @@ async def echo(bot, update):
                 "video", format_id, format_ext)
             inline_keyboard.append([
                 InlineKeyboardButton(
-                    "SVideo",
+                    "🎞️SVideo🎞️",
                     callback_data=(cb_string_video).encode("UTF-8")
                 ),
                 InlineKeyboardButton(
-                    "DFile",
+                    "🗂️DFile🗂️",
                     callback_data=(cb_string_file).encode("UTF-8")
                 )
             ])
@@ -396,11 +413,11 @@ async def echo(bot, update):
             "video", "OFL", "ENON")
         inline_keyboard.append([
             InlineKeyboardButton(
-                "SVideo",
+                "SVideo 🎞",
                 callback_data=(cb_string_video).encode("UTF-8")
             ),
             InlineKeyboardButton(
-                "DFile",
+                "DFile 📁",
                 callback_data=(cb_string_file).encode("UTF-8")
             )
         ])
