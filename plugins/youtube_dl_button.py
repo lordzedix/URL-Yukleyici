@@ -139,6 +139,9 @@ async def youtube_dl_call_back(bot, update):
             "--hls-prefer-ffmpeg", youtube_dl_url,
             "-o", download_directory
         ]
+    if Config.HTTP_PROXY != "":
+        command_to_exec.append("--proxy")
+        command_to_exec.append(Config.HTTP_PROXY)
     if "moly.cloud" in youtube_dl_url:
         command_to_exec.append("--referer")
         command_to_exec.append("https://vidmoly.to/")
