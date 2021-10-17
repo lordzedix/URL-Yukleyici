@@ -47,14 +47,6 @@
       "description": "Oturum Adınız: Örnek: urlyukleyici",
       "value": ""
     },
-    "REFERER": {
-      "description": "Website",
-      "value": "https://dizipal81.com/"
-    },
-    "URL_TITLE": {
-      "description": "Title",
-      "value": "cdn"
-    },
     "BANNED_USERS": {
       "description": "Yasaklanan İstenmeyen üyeler.",
       "value": "",
