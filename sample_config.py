@@ -27,8 +27,6 @@ class Config(object):
     # Get your own proxy from https://github.com/rg3/youtube-dl/issues/1091#issuecomment-230163061
     HTTP_PROXY = os.environ.get("HTTP_PROXY", "")
     # maximum message length in Telegram
-    REFERER = os.environ.get("REFERER", "")
-    URL_TITLE = os.environ.get("URL_TİTLE", "")
     MAX_MESSAGE_LENGTH = 4096
     # set timeout for subprocess
     PROCESS_MAX_TIMEOUT = 3600
