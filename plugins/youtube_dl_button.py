@@ -39,7 +39,7 @@ from helper_funcs.help_Nekmo_ffmpeg import generate_screen_shots
 
 async def youtube_dl_call_back(bot, update):
     cb_data = update.data
-    # youtube_dl extractors
+    # yt-dlp extractors
     tg_send_type, youtube_dl_format, youtube_dl_ext = cb_data.split("|")
     thumb_image_path = Config.DOWNLOAD_LOCATION + \
         "/" + str(update.from_user.id) + ".jpg"
@@ -115,7 +115,7 @@ async def youtube_dl_call_back(bot, update):
     command_to_exec = []
     if tg_send_type == "audio":
         command_to_exec = [
-            "youtube-dl",
+            "yt-dlp",
             "-c",
             "--max-filesize", str(Config.TG_MAX_FILE_SIZE),
             "--prefer-ffmpeg",
@@ -131,7 +131,7 @@ async def youtube_dl_call_back(bot, update):
         if "youtu" in youtube_dl_url:
             minus_f_format = youtube_dl_format + "+bestaudio"
         command_to_exec = [
-            "youtube-dl",
+            "yt-dlp",
             "-c",
             "--max-filesize", str(Config.TG_MAX_FILE_SIZE),
             "--embed-subs",
@@ -139,9 +139,15 @@ async def youtube_dl_call_back(bot, update):
             "--hls-prefer-ffmpeg", youtube_dl_url,
             "-o", download_directory
         ]
-    if Config.HTTP_PROXY != "":
-        command_to_exec.append("--proxy")
-        command_to_exec.append(Config.HTTP_PROXY)
+    if "moly.cloud" in youtube_dl_url:
+        command_to_exec.append("--referer")
+        command_to_exec.append("https://vidmoly.to/")
+    if "closeload" in youtube_dl_url:
+        command_to_exec.append("--referer")
+        command_to_exec.append("https://closeload.com/")
+    if "cdnhan" in youtube_dl_url:
+        command_to_exec.append("--referer")
+        command_to_exec.append("https://dizipal81.com/")
     if youtube_dl_username is not None:
         command_to_exec.append("--username")
         command_to_exec.append(youtube_dl_username)
