@@ -107,7 +107,7 @@ async def broadcast_(c, m):
     else:
         await m.reply_document(
             document='broadcast.txt',
-            caption=f"Yayın tamamlandı `{completed_in}`\n\nToplam kullanıcı {total_users}.\nToplam yapılan {done}, {success} başarılı {failed} başarısız.",
+            caption=f"Yayın `{completed_in}` içinde tamamlandı\n\nToplam kullanıcı {total_users}.\nToplam yapılan yayın {done}, {success} başarılı {failed} başarısız.",
             quote=True
         )
     
