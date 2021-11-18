@@ -34,45 +34,44 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 # https://stackoverflow.com/a/37631799/4723940
 from PIL import Image
-
-
+    
 async def ddl_call_back(bot, update):
     logger.info(update)
     cb_data = update.data
-    # youtube_dl extractors
-    tg_send_type, youtube_dl_format, youtube_dl_ext = cb_data.split("=")
+    # yt_dlp extractors
+    tg_send_type, yt_dlp_format, yt_dlp_ext = cb_data.split("=")
     thumb_image_path = Config.DOWNLOAD_LOCATION + \
-        "/" + str(update.from_user.id) + ".jpg"
-    youtube_dl_url = update.message.reply_to_message.text
-    custom_file_name = os.path.basename(youtube_dl_url)
-    if "|" in youtube_dl_url:
-        url_parts = youtube_dl_url.split("|")
+        "/thumb/" + str(update.from_user.id) + ".jpg"
+    yt_dlp_url = update.message.reply_to_message.text
+    custom_file_name = os.path.basename(yt_dlp_url)
+    if "|" in yt_dlp_url:
+        url_parts = yt_dlp_url.split("|")
         if len(url_parts) == 2:
-            youtube_dl_url = url_parts[0]
+            yt_dlp_url = url_parts[0]
             custom_file_name = url_parts[1]
         else:
             for entity in update.message.reply_to_message.entities:
                 if entity.type == "text_link":
-                    youtube_dl_url = entity.url
+                    yt_dlp_url = entity.url
                 elif entity.type == "url":
                     o = entity.offset
                     l = entity.length
-                    youtube_dl_url = youtube_dl_url[o:o + l]
-        if youtube_dl_url is not None:
-            youtube_dl_url = youtube_dl_url.strip()
+                    yt_dlp_url = yt_dlp_url[o:o + l]
+        if yt_dlp_url is not None:
+            yt_dlp_url =yt_dlp_url.strip()
         if custom_file_name is not None:
             custom_file_name = custom_file_name.strip()
         # https://stackoverflow.com/a/761825/4723940
-        logger.info(youtube_dl_url)
+        logger.info(yt_dlp_url)
         logger.info(custom_file_name)
     else:
         for entity in update.message.reply_to_message.entities:
             if entity.type == "text_link":
-                youtube_dl_url = entity.url
+                yt_dlp_url = entity.url
             elif entity.type == "url":
                 o = entity.offset
                 l = entity.length
-                youtube_dl_url = youtube_dl_url[o:o + l]
+                yt_dlp_url = yt_dlp_url[o:o + l]
     user = await bot.get_me()
     mention = user["mention"]
     description = Translation.CUSTOM_CAPTION_UL_FILE.format(mention)
@@ -93,7 +92,7 @@ async def ddl_call_back(bot, update):
             await download_coroutine(
                 bot,
                 session,
-                youtube_dl_url,
+                yt_dlp_url,
                 download_directory,
                 update.message.chat.id,
                 update.message.message_id,
@@ -137,6 +136,8 @@ async def ddl_call_back(bot, update):
                 if metadata is not None:
                     if metadata.has("duration"):
                         duration = metadata.get('duration').seconds
+                    else:
+                      return 0
             # get the correct width, height, and duration for videos greater than 10MB
             if os.path.exists(thumb_image_path):
                 width = 0
@@ -185,7 +186,7 @@ async def ddl_call_back(bot, update):
                     )
                 )
                 audio_f = await audio.forward(Config.LOG_CHANNEL)
-                await audio_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await audio_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + yt_dlp_url)
             elif tg_send_type == "file":
                 document = await bot.send_document(
                     chat_id=update.message.chat.id,
@@ -202,7 +203,7 @@ async def ddl_call_back(bot, update):
                     )
                 )
                 document_f = await document.forward(Config.LOG_CHANNEL)
-                await document_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await document_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + yt_dlp_url)
             elif tg_send_type == "vm":
                 video_note = await bot.send_video_note(
                     chat_id=update.message.chat.id,
@@ -219,7 +220,7 @@ async def ddl_call_back(bot, update):
                     )
                 )
                 video_note_f = await video_note.forward(Config.LOG_CHANNEL)
-                await video_note_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await video_note_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + yt_dlp_url)
             elif tg_send_type == "video":
                 video = await bot.send_video(
                     chat_id=update.message.chat.id,
@@ -240,7 +241,7 @@ async def ddl_call_back(bot, update):
                     )
                 )
                 video_f = await video.forward(Config.LOG_CHANNEL)
-                await video_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + youtube_dl_url)
+                await video_f.reply_text("Ad: " + str(update.from_user.first_name) + "\nID: " + "<code>" + str(update.from_user.id) + "</code>" + "\nURL: " + yt_dlp_url)
             else:
                 logger.info("Bu oldu mu? :\\")
             end_two = datetime.now()
