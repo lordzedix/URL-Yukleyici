@@ -2,11 +2,12 @@ aiohttp
 beautifulsoup4
 hachoir
 numpy
+ffmpeg-python
 Pillow
-pyrogram
+git+git://github.com/pyrogram/pyrogram@master
 requests
 tgcrypto
-yt-dlp
+git+https://github.com/yt-dlp/yt-dlp
 olefile
 filetype
 tldextract
