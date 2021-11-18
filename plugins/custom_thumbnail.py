@@ -27,7 +27,7 @@ async def generate_custom_thumbnail(c, m):
     if m.reply_to_message is not None:
         reply_message = m.reply_to_message
         if reply_message.media_group_id is not None:
-            ownload_location = Config.DOWNLOAD_LOCATION + "/" + str(m.from_user.id) + "/" + str(reply_message.media_group_id) + "/"
+            download_location = Config.DOWNLOAD_LOCATION + "/" + str(m.from_user.id) + "/" + str(reply_message.media_group_id) + "/"
             save_final_image = download_location + str(round(time.time())) + ".jpg"
             list_im = os.listdir(download_location)
             if len(list_im) == 2:
