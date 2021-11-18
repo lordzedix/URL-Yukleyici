@@ -12,9 +12,73 @@ logger = logging.getLogger(__name__)
 import asyncio
 import os
 import time
+import ffmpeg
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+from subprocess import call, check_output
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.errors import exceptions, UserNotParticipant
+from requests import head
+from inspect import currentframe
 
+fileName = 'help_Nekmo_ffmpeg'
+
+# the secret configuration specific things
+if bool(os.environ.get("WEBHOOK", False)):
+    from sample_config import Config
+else:
+    from config import Config
+    
+async def length_of_file(bot, url):
+    try:
+        h = head(url, allow_redirects=True)
+        header = h.headers
+        content_length = int(header.get('content-length'))
+        file_length = int(content_length/1048576)     #Getting Length of File
+        if content_length > 2097152000:  #File`s Size is more than Limit 
+            return file_length
+        else:   #File`s Size is in the Limit
+            return 'Valid'
+    except Exception as e:  #File is not Exist in Given URL
+        await bot.send_message(Config.OWNER_ID, line_number(fileName, e))
+        return 'Not Valid'
+      
+def line_number(fileName, e):
+    cf = currentframe()
+    return f'In {fileName}.py at line {cf.f_back.f_lineno} {e}'
+  
+  
+def get_thumbnail(in_filename, path, ttl):
+    out_filename = os.path.join(path, str(time.time()) + ".jpg")
+    open(out_filename, 'a').close()
+    try:
+        (
+            ffmpeg
+            .input(in_filename, ss=ttl)
+            .output(out_filename, vframes=1)
+            .overwrite_output()
+            .run(capture_stdout=True, capture_stderr=True)
+        )
+        return out_filename
+    except ffmpeg.Error as e:
+      return None
+
+    
+def get_duration(filepath):
+    metadata = extractMetadata(createParser(filepath))
+    if metadata.has("duration"):
+      return metadata.get('duration').seconds
+    else:
+      return 0
+
+    
+def get_width_height(filepath):
+    metadata = extractMetadata(createParser(filepath))
+    if metadata.has("width") and metadata.has("height"):
+      return metadata.get("width"), metadata.get("height")
+    else:
+      return 1280, 720
+    
 
 async def place_water_mark(input_file, output_file, water_mark_file):
     watermarked_file = output_file + ".watermark.png"
