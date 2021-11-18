@@ -71,6 +71,14 @@
       "description": "İsteklerde kullanılması gereken yığın boyutu",
       "value": "128"
     },
+    "REFERER_URL": {
+      "description": "403 Hatası veren siteler için",
+      "value": ""
+    },
+    "REFERER": {
+      "description": "403 Hatası veren siteler için",
+      "value": ""
+    },
     "HTTP_PROXY": {
       "description": "Kısıtlı Alanlarda youtube-dl'ye erişmek için proxy. https://github.com/rg3/youtube-dl/issues/1091#issuecomment-230163061 adresinden kendi proxy'nizi alın",
       "value": "",
