@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # (c) Shrimadhav U K
 
-# the logging things
 import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -12,33 +11,23 @@ import numpy
 import os
 from PIL import Image
 import time
+import pyrogram
+from pyrogram import Client, filters
+from translation import Translation
 
-# the secret configuration specific things
 if bool(os.environ.get("WEBHOOK", False)):
     from sample_config import Config
 else:
     from config import Config
-
-# the Strings used for this "thing"
-from translation import Translation
-
-from pyrogram import Client, filters
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 
 @Client.on_message(filters.command(["genthumb"]))
-async def generate_custom_thumbnail(bot, update):
-    if update.from_user.id in Config.BANNED_USERS:
-        await bot.delete_messages(
-            chat_id=update.chat.id,
-            message_ids=update.message_id,
-            revoke=True
-        )
-        return
-    if update.reply_to_message is not None:
-        reply_message = update.reply_to_message
+async def generate_custom_thumbnail(c, m):
+    if m.reply_to_message is not None:
+        reply_message = m.reply_to_message
         if reply_message.media_group_id is not None:
-            download_location = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + "/" + str(reply_message.media_group_id) + "/"
+            ownload_location = Config.DOWNLOAD_LOCATION + "/" + str(m.from_user.id) + "/" + str(reply_message.media_group_id) + "/"
             save_final_image = download_location + str(round(time.time())) + ".jpg"
             list_im = os.listdir(download_location)
             if len(list_im) == 2:
@@ -52,17 +41,17 @@ async def generate_custom_thumbnail(bot, update):
                 # send
                 user = await bot.get_me()
                 mention = user["mention"]
-                await bot.send_photo(
-                    chat_id=update.chat.id,
+                await c.send_photo(
+                    chat_id=m.chat.id,
                     photo=save_final_image,
                     caption=Translation.CUSTOM_CAPTION_UL_FILE.format(mention),
-                    reply_to_message_id=update.message_id
+                    reply_to_message_id=m.message_id
                 )
             else:
-                await bot.send_message(
-                    chat_id=update.chat.id,
+                await c.send_message(
+                    chat_id=m.chat.id,
                     text=Translation.ERR_ONLY_TWO_MEDIA_IN_ALBUM,
-                    reply_to_message_id=update.message_id
+                    reply_to_message_id=m.message_id
                 )
             try:
                 [os.remove(download_location + i) for i in list_im ]
@@ -70,69 +59,48 @@ async def generate_custom_thumbnail(bot, update):
             except:
                 pass
         else:
-            await bot.send_message(
-                chat_id=update.chat.id,
+            await c.send_message(
+                chat_id=m.chat.id,
                 text=Translation.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
-                reply_to_message_id=update.message_id
+                reply_to_message_id=m.message_id
             )
     else:
-        await bot.send_message(
-            chat_id=update.chat.id,
+        await c.send_message(
+            chat_id=m.chat.id,
             text=Translation.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
-            reply_to_message_id=update.message_id
+            reply_to_message_id=m.message_id
         )
 
 
 @Client.on_message(filters.private & filters.photo)
-async def save_photo(bot, update):
-    if update.from_user.id in Config.BANNED_USERS:
-        await bot.delete_messages(
-            chat_id=update.chat.id,
-            message_ids=update.message_id,
-            revoke=True
-        )
-        return
-    if update.media_group_id is not None:
+async def save_photo(c, m):
+    v = await m.reply_text("Thumbnail Kaydediliyor.", True)
+    if m.media_group_id is not None:
         # album is sent
-        download_location = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + "/" + str(update.media_group_id) + "/"
-        # create download directory, if not exist
+        download_location = Config.DOWNLOAD_LOCATION + "/" + str(m.from_user.id) + "/" + str(m.media_group_id) + "/"
         if not os.path.isdir(download_location):
-            os.makedirs(download_location)
-        await bot.download_media(
-            message=update,
+            os.mkdir(download_location)
+        await c.download_media(
+            message=m,
             file_name=download_location
         )
     else:
         # received single photo
-        download_location = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + ".jpg"
-        await bot.download_media(
-            message=update,
+        download_location = Config.DOWNLOAD_LOCATION + "/" + str(m.from_user.id) + ".jpg"
+        await c.download_media(
+            message=m,
             file_name=download_location
         )
-        await bot.send_message(
-            chat_id=update.chat.id,
-            text=Translation.SAVED_CUSTOM_THUMB_NAIL,
-            reply_to_message_id=update.message_id
-        )
-
-
+        try:
+           await v.edit_text("Thumbnail Kaydedildi.")
+        except Exception as e:
+          log.info(f"#Hata {e}")
+        
 @Client.on_message(filters.command(["delthumb"]))
-async def delthumbnail(bot, update):
-    if update.from_user.id in Config.BANNED_USERS:
-        await bot.delete_messages(
-            chat_id=update.chat.id,
-            message_ids=update.message_id,
-            revoke=True
-        )
-        return
-    download_location = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id)
+async def delete_thumbnail(c,m):
+    download_location = Config.DOWNLOAD_LOCATION + "/" + "thumbnails" + "/" + str(m.from_user.id)
     try:
         os.remove(download_location + ".jpg")
-        # os.remove(download_location + ".json")
     except:
         pass
-    await bot.send_message(
-        chat_id=update.chat.id,
-        text=Translation.DEL_ETED_CUSTOM_THUMB_NAIL,
-        reply_to_message_id=update.message_id
-    )
+    await m.reply_text("Thumbnail Kaldırıldı.",quote=True)
