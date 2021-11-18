@@ -28,6 +28,9 @@ class Config(object):
     HTTP_PROXY = os.environ.get("HTTP_PROXY", "")
     # maximum message length in Telegram
     MAX_MESSAGE_LENGTH = 4096
+    # Website referer
+    REFERER = os.environ.get("REFERER", "")
+    REFERER_URL = os.environ.get("REFERER_URL", "")
     # set timeout for subprocess
     PROCESS_MAX_TIMEOUT = 3600
     # watermark file
